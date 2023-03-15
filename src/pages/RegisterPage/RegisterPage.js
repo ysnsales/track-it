@@ -3,18 +3,30 @@ import axios from "axios";
 import * as url from "../../assets/logo-completa.svg"
 import { Link } from "react-router-dom"
 import { useState } from "react"
+import { ThreeDots } from 'react-loader-spinner'
+
 
 export default function RegisterPage() {
-    const [email, setEmail]=useState("");
-    const [name, setName]=useState("");
-    const [image, setImage]=useState("");
-    const [password, setPassword]=useState("");
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [image, setImage] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false)
 
-    function Register(e){
+    function Register(e) {
         e.preventDefault();
-        const post = {email, name, image, password}
+        setLoading(true)
+        const post = { email, name, image, password }
         const promisePost = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", post);
-        promisePost.then(response => console.log(response))
+        setLoading(true)
+        promisePost.then(response => {
+            console.log(response);
+            setLoading(false);
+        })
+
+        promisePost.catch(error => {
+            setLoading(false)
+        })
     }
 
     return (
@@ -30,41 +42,59 @@ export default function RegisterPage() {
                         id="email"
                         type="text"
                         required
-                        placeholder="email" 
+                        placeholder="email"
+                        disabled={loading ? true : false}
                         onChange={e => setEmail(e.target.value)}
-                        />
+                    />
 
                     <input
                         data-test=""
                         id="senha"
                         type="password"
                         required
-                        placeholder="senha" 
+                        placeholder="senha"
+                        disabled={loading ? true : false}
                         onChange={e => setPassword(e.target.value)}
-                        />
+                    />
 
                     <input
                         data-test=""
                         id="nome"
                         type="text"
                         required
-                        placeholder="nome" 
+                        placeholder="nome"
+                        disabled={loading ? true : false}
                         onChange={e => setName(e.target.value)}
-                        />
+                    />
 
                     <input
                         data-test=""
                         id="foto"
                         type="link"
                         required
-                        placeholder="foto" 
-                        onChange={e => setImage(e.target.value)}/>
+                        placeholder="foto"
+                        disabled={loading ? true : false}
+                        onChange={e => setImage(e.target.value)} />
 
-                    <button type="submit">Cadastrar</button>
+                    <button type="submit"
+                        disabled={loading ? true : false}>{loading ?
+                            <ThreeDots
+                                height="80"
+                                width="80"
+                                radius="9"
+                                margin-bottom="10"
+                                color="#FFFFFF"
+                                ariaLabel="three-dots-loading"
+                                wrapperStyle={{}}
+                                wrapperClassName=""
+                                visible={loading}
+                                align-self="center"
+                            />
+                            : "Entrar"}</button>
                 </FormContainer>
             </form>
             <Link to={`/`}>
-            <p>Já tem uma conta? Faça login!</p>
+                <p>Já tem uma conta? Faça login!</p>
             </Link>
         </PageContainer>
     )
@@ -124,6 +154,7 @@ input {
     border: 1px solid #52B6FF;
 }
 }
+
 button {
     color: #FFFFFF;
     background-color: #52B6FF;
@@ -133,8 +164,11 @@ button {
     border-style: none;
 	padding: 0 10px;
     margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    font-family: 'Lexend Deca', sans-serif;
+    font-family: 'Lexend Deca';
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
