@@ -1,6 +1,8 @@
 import styled from "styled-components"
 import axios from "axios";
 import TopoMenu from "../TopoMenu"
+import * as url from "../../assets/Group.svg"
+import { ThreeDots } from 'react-loader-spinner'
 
 import { useContext } from "react";
 import { UserContext } from "../UserContext";
@@ -13,18 +15,34 @@ export default function HabitsPage() {
     const [days, setDays] = useState([])
     const [addHabit, setAddHabit] = useState(false)
     const [disabled, setDisabled] = useState(false)
+    const [listHabits, setListHabits] = useState([])
 
-    const  user = useContext(UserContext);
+    const [loading, setLoading] = useState(false)
+
+    const user = useContext(UserContext);
     console.log(name)
     console.log(days)
 
     const week = ["D", "S", "T", "Q", "Q", "S", "S"];
 
-    const header = {headers: {
-        Authorization: `Bearer ${user.user.token}`,
-      },}
-      console.log(header);
+    const header = {
+        headers: {
+            Authorization: `Bearer ${user.user.token}`,
+        },
+    };
 
+    useEffect(() => {
+        const promiseHabits = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`, header);
+
+        promiseHabits.then((response) => {
+            setListHabits(response.data)
+            console.log(response.data)
+            console.log("lista" + listHabits)
+        })
+        promiseHabits.catch((error) => {
+            console.log(error.response.data)
+        })
+    }, []);
 
     function SelectDays(index) {
         let newDays = [...days];
@@ -44,7 +62,16 @@ export default function HabitsPage() {
             const post = { name, days };
             console.log(post)
             const promisePost = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", post, header);
-            promisePost.then(response => console.log(response.data))
+            promisePost.then(response => {
+                console.log(response.data);
+                setLoading(false);
+                setAddHabit(false)
+            })
+            promisePost.catch(error => {
+                console.log(error.response.data);
+                setLoading(false);
+                setAddHabit(false);
+            })
         }
     }
 
@@ -68,6 +95,7 @@ export default function HabitsPage() {
                             type="text"
                             placeholder="nome do hábito"
                             onChange={e => setName(e.target.value)} />
+
                         <div>
                             {week.map((day, index) => (
 
@@ -84,19 +112,64 @@ export default function HabitsPage() {
 
                         <CancelSave disabled={disabled}>
                             <button style={{ background: "#FFFFFF", color: "#52B6FF" }}
-                                type="button">
+                                type="button"
+                                onClick={() => setAddHabit(false)}>
                                 Cancelar
                             </button>
 
                             <button style={{ background: "#52B6FF", color: "#FFFFFF" }}
-                                type="submit">
-                                Salvar
+                                type="submit"
+                                disabled={loading ? true : false}>
+                                {loading ?
+                                    <ThreeDots
+                                        height="80"
+                                        width="80"
+                                        radius="9"
+                                        margin-bottom="10"
+                                        color="#FFFFFF"
+                                        ariaLabel="three-dots-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClassName=""
+                                        visible={loading}
+                                        align-self="center"
+                                    />
+                                    : "Salvar"}
                             </button>
                         </CancelSave>
                     </form>
                 </AddHabit>
 
-                <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+                <HabitsContainer>
+
+                    {listHabits.length != 0 ?
+                        <>
+                            {listHabits.map((habit) => (
+                                <div key={habit.id}>
+                                    <p>{habit.name}</p>
+                                    <img src={url.default} />
+                                    <div>
+
+                                        {week.map((day, index) => (
+
+                                            <DayButton key={index}
+                                                state={habit.days.includes(index) ? "selecionado" : "disponivel"}>
+                                                <button
+                                                    onClick={() => SelectDays(index)}
+                                                    type="button">
+                                                    {day}
+                                                </button>
+                                            </DayButton>
+                                        ))}
+                                    </div>
+
+
+                                </div>
+                            ))}
+                        </>
+                        : <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+
+                    }
+                </HabitsContainer>
 
             </PageContainer>
         </>
@@ -104,32 +177,61 @@ export default function HabitsPage() {
 }
 
 const PageContainer = styled.div`
-width: 100%;
-height: 100vw;
+width: 100vw;
+
 display: flex;
 flex-direction: column;
-padding-top: 98px;
+padding: 98px 0 98px;
 background-color: #E5E5E5;
+justify-content: space-between;
     p{
         font-family: 'Lexend Deca', sans-serif;
         font-style: normal;
         font-weight: 400;
         font-size: 18px;
         line-height: 22px;
-        padding: 0 18px;
         box-sizing: border-box;
-        margin-top: 20px;
-
         color: #666666;
     }
 `
+const HabitsContainer = styled.div`
+margin: 0 auto;
+border-radius: 5px;
+
+    div{
+        height: 55px;
+        width: 304px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        padding: 18px;
+        background-color: #FFFFFF;
+        div {
+            display: flex;
+            position: relative;
+            bottom: 10px;
+            padding: 0;
+            height: 30px;
+            flex-direction: row;
+            width: 250px;
+        }
+        img{
+            width: 13px;
+            position: relative;
+            bottom: 25px;
+            left: 295px;
+            margin: 0;
+        }   
+        
+    }
+
+`
 
 const Habits = styled.div`
-width: 100%;
+width: 340px;
 display: flex;
 align-items: center;
 justify-content: space-between;
-padding: 0 18px 0;
+margin: 0 auto 20px;
 box-sizing: border-box;
 
     h1{
@@ -149,7 +251,7 @@ box-sizing: border-box;
         border-style: none;
         display: flex;
         justify-content: center;
-        align-items: center;
+        padding: 0;
 
         font-family: 'Lexend Deca', sans-serif;
         font-style: normal;
@@ -160,15 +262,15 @@ box-sizing: border-box;
 `
 
 const AddHabit = styled.div`
-width: 340px;
+width: 304px;
 background: #FFFFFF;
 border-radius: 5px;
 display: ${props => props.addHabit ? "flex" : "none"};
 flex-direction: row;
 padding: 18px;
-margin: 20px auto 0;
+margin: 0 auto 20px;
     input{
-        width: 303px;
+        width: 283px;
         height: 45px;
         padding: 0 10px;
         background: #FFFFFF;
@@ -194,9 +296,7 @@ margin: 20px auto 0;
         display: flex;
         flex-direction: row;
     }
-
 `
-
 
 const DayButton = styled.div`
     button{
@@ -214,7 +314,7 @@ const DayButton = styled.div`
         font-family: 'Lexend Deca', sans-serif;
         font-style: normal;
         font-weight: 400;
-        font-size: 19.976px;
+        font-size: 20px;
         line-height: 25px;
     }
 `
