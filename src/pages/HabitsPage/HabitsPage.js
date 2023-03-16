@@ -32,15 +32,15 @@ export default function HabitsPage() {
     };
 
     useEffect(() => {
-        const promiseHabits = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`, header);
 
+        const promiseHabits = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`, header);
         promiseHabits.then((response) => {
-            setListHabits(response.data)
-            console.log(response.data)
-            console.log("lista" + listHabits)
+            setListHabits(response.data);
+            console.log(response.data);
+            console.log("lista" + listHabits);
         })
         promiseHabits.catch((error) => {
-            console.log(error.response.data)
+            console.log(error.response.data);
         })
     }, []);
 
@@ -65,7 +65,7 @@ export default function HabitsPage() {
             promisePost.then(response => {
                 console.log(response.data);
                 setLoading(false);
-                setAddHabit(false)
+                setAddHabit(false);
             })
             promisePost.catch(error => {
                 console.log(error.response.data);
@@ -75,6 +75,11 @@ export default function HabitsPage() {
         }
     }
 
+    function Delete(id) {
+        axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, header)
+        setListHabits(listHabits.filter(habit => habit.id != id))
+
+    }
     return (
         <>
             <TopoMenu />
@@ -146,7 +151,7 @@ export default function HabitsPage() {
                             {listHabits.map((habit) => (
                                 <div key={habit.id}>
                                     <p>{habit.name}</p>
-                                    <img src={url.default} />
+                                    <img onClick={() => Delete(habit.id)}src={url.default} />
                                     <div>
 
                                         {week.map((day, index) => (
@@ -178,7 +183,7 @@ export default function HabitsPage() {
 
 const PageContainer = styled.div`
 width: 100vw;
-
+background-size: cover;
 display: flex;
 flex-direction: column;
 padding: 98px 0 98px;
@@ -220,7 +225,7 @@ border-radius: 5px;
             bottom: 25px;
             left: 295px;
             margin: 0;
-        }   
+        }
         
     }
 

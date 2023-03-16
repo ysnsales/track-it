@@ -4,6 +4,7 @@ const GlobalStyle = createGlobalStyle`
 
 body {
 	height: 100%;
+	background-color: #E5E5E5;
 }
 	button {
 

@@ -30,7 +30,7 @@ export default function LoginPage() {
         setLoading(true)
         promisePost.then(response => {
             setUser(response.data);
-            navigate("/habitos");
+            navigate("/hoje");
             console.log(response.data.token)
             setLoading(false);
             console.log(user);
@@ -102,6 +102,8 @@ flex-direction: column;
 align-items: center;
 justify-content: center;
 padding-top: 70px;
+background-color: #FFFFFF;
+padding-bottom: 120px;
     p{
         font-family: 'Lexend Deca', sans-serif;
         font-style: normal;

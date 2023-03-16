@@ -3,11 +3,12 @@ import styled from "styled-components"
 import { Image } from "../App" ; 
 import { useContext } from "react";
 import { UserContext } from "./UserContext";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Topo() {
 const user = useContext(UserContext)
-
+const navigate = useNavigate();
     return (
         <>
             <ContainerTopo>
@@ -16,9 +17,9 @@ const user = useContext(UserContext)
             </ContainerTopo>
 
             <ContainerMenu>
-                <h1>Hábitos</h1>
-                <div>Hoje</div>
-                <h1>Histórico</h1>
+                <h1 onClick={() => navigate("/habitos")}>Hábitos</h1>
+                <div onClick={() => navigate("/hoje")}>Hoje</div>
+                <h1 onClick={() =>navigate("/historico")}>Histórico</h1>
 
             </ContainerMenu>
         </>
@@ -33,8 +34,8 @@ const ContainerTopo = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     background-color: #126BA5;
+    z-index: 2;
     h1{        
         font-family: 'Playball', cursive;
         font-style: normal;
@@ -53,7 +54,7 @@ const ContainerTopo = styled.div`
 `
 
 const ContainerMenu = styled.div`
-    z-index: 1;
+    z-index: 2;
     width: 100%;
     max-height: 70px;
     position: fixed;
