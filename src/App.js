@@ -1,23 +1,28 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { useEffect, useState } from "react";
 
 import LoginPage from "./pages/LoginPage/LoginPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import HabitsPage from "./pages/HabitsPage/HabitsPage";
 
+import { createContext } from 'react';
+
 
 export default function App() {
-  return (
-          <BrowserRouter>
-              {/*<Topo/>*/}
-              {/*<Menu/>*/}
-  
-              <Routes>
-                  <Route path="/" element={<LoginPage />} />
-                  <Route path="/registro" element={<RegisterPage />} /> 
-                  {/*<Route path="/" element={<HabitsPage />} />
-                  {/*<Route path="/hoje" element={<TodayPage />} />}
+    //const [user, setUser] = useState({})
+    return (
+        <>            <BrowserRouter>
+                {/*<Topo/>*/}
+                {/*<Menu/>*/}
+
+                <Routes>
+                    <Route path="/" element={<LoginPage />} />
+                    <Route path="/registro" element={<RegisterPage />} />
+                    <Route path="/habitos" element={<HabitsPage />} />
+                    {/*<Route path="/hoje" element={<TodayPage />} />}
   {<Route path="/historico" element={<HistoryPage />} />*/}
-              </Routes>
-          </BrowserRouter>
-      )
-  }
+                </Routes>
+            </BrowserRouter>
+        </>
+    )
+}

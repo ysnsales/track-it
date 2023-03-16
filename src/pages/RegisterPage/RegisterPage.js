@@ -4,7 +4,9 @@ import * as url from "../../assets/logo-completa.svg"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { ThreeDots } from 'react-loader-spinner'
-
+import { useNavigate } from "react-router-dom";
+import { Image } from "../../App"; 
+import { useContext } from "react";
 
 export default function RegisterPage() {
     const [email, setEmail] = useState("");
@@ -12,6 +14,7 @@ export default function RegisterPage() {
     const [image, setImage] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate();
 
     function Register(e) {
         e.preventDefault();
@@ -21,11 +24,15 @@ export default function RegisterPage() {
         setLoading(true)
         promisePost.then(response => {
             console.log(response);
+            navigate("/");
             setLoading(false);
+            
         })
 
         promisePost.catch(error => {
-            setLoading(false)
+            alert("Preencha os campos corretamente");
+            setLoading(false);
+            
         })
     }
 
@@ -168,7 +175,7 @@ button {
     justify-content: center;
     align-items: center;
 
-    font-family: 'Lexend Deca';
+    font-family: 'Lexend Deca', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 20px;

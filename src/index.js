@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
+import { UserProvider } from './pages/UserContext'
 import GlobalStyle from "./style/GlobalStyle"
 import ResetStyle from './style/ResetStyle'
 
@@ -9,6 +10,8 @@ root.render(
     <React.StrictMode>
         <ResetStyle />
         <GlobalStyle />
-        <App />
+        <UserProvider>
+            <App />
+        </UserProvider>
     </React.StrictMode>
 )
