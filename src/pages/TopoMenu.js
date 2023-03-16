@@ -11,15 +11,15 @@ const user = useContext(UserContext)
 const navigate = useNavigate();
     return (
         <>
-            <ContainerTopo>
+            <ContainerTopo data-test="header">
                 <h1>TrackIt</h1>
                 <img src={user.user.image} />
             </ContainerTopo>
 
-            <ContainerMenu>
-                <h1 onClick={() => navigate("/habitos")}>Hábitos</h1>
-                <div onClick={() => navigate("/hoje")}>Hoje</div>
-                <h1 onClick={() =>navigate("/historico")}>Histórico</h1>
+            <ContainerMenu data-test="menu">
+                <h1 data-test="habit-link" onClick={() => navigate("/habitos")}>Hábitos</h1>
+                <div data-test="today-link" onClick={() => navigate("/hoje")}>Hoje</div>
+                <h1 data-test="history-link" onClick={() =>navigate("/historico")}>Histórico</h1>
 
             </ContainerMenu>
         </>

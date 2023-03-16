@@ -16,7 +16,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
 
-    
+
 
     const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ export default function LoginPage() {
             <form onSubmit={Login}>
                 <FormContainer>
                     <input
-                        data-test=""
+                        data-test="email-input"
                         id="email"
                         type="text"
                         required
@@ -62,7 +62,7 @@ export default function LoginPage() {
                     />
 
                     <input
-                        data-test=""
+                        data-test="password-input"
                         id="senha"
                         type="password"
                         required
@@ -71,26 +71,28 @@ export default function LoginPage() {
                         onChange={e => setPassword(e.target.value)}
                     />
 
-                    <button type="submit"
-                    disabled={loading ? true : false}>{loading ?
-                        <ThreeDots
-                            height="80"
-                            width="80"
-                            radius="9"
-                            margin-bottom="10"
-                            color="#FFFFFF"
-                            ariaLabel="three-dots-loading"
-                            wrapperStyle={{}}
-                            wrapperClassName=""
-                            visible={loading}
-                            align-self="center"
-                        />
-                        : "Entrar"}</button>
+                    <button
+                        data-test="login-btn"
+                        type="submit"
+                        disabled={loading ? true : false}>{loading ?
+                            <ThreeDots
+                                height="80"
+                                width="80"
+                                radius="9"
+                                margin-bottom="10"
+                                color="#FFFFFF"
+                                ariaLabel="three-dots-loading"
+                                wrapperStyle={{}}
+                                wrapperClassName=""
+                                visible={loading}
+                                align-self="center"
+                            />
+                            : "Entrar"}</button>
 
                 </FormContainer>
             </form>
             <Link to={`/registro`}>
-                <p>Não tem uma conta? Cadastre-se!</p>
+                <p data-test="signup-link" >Não tem uma conta? Cadastre-se!</p>
             </Link>
         </PageContainer>
     )

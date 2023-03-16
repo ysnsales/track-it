@@ -88,14 +88,14 @@ export default function HabitsPage() {
 
                 <Habits>
                     <h1>Meus Hábitos</h1>
-                    <button
+                    <button data-test="habit-create-btn"
                         onClick={() => setAddHabit(true)}>+</button>
                 </Habits>
 
-                <AddHabit addHabit={addHabit}>
+                <AddHabit data-test="habit-create-container" addHabit={addHabit}>
                     <form onSubmit={CreateHabit}>
                         <input
-                            data-test=""
+                            data-test="habit-name-input"
                             id=""
                             type="text"
                             placeholder="nome do hábito"
@@ -106,7 +106,7 @@ export default function HabitsPage() {
 
                                 <DayButton key={index}
                                     state={days.includes(index) ? "selecionado" : "disponivel"}>
-                                    <button
+                                    <button data-test="habit-day"
                                         onClick={() => SelectDays(index)}
                                         type="button">
                                         {day}
@@ -116,13 +116,13 @@ export default function HabitsPage() {
                         </div>
 
                         <CancelSave disabled={disabled}>
-                            <button style={{ background: "#FFFFFF", color: "#52B6FF" }}
+                            <button data-test="habit-create-cancel-btn" style={{ background: "#FFFFFF", color: "#52B6FF" }}
                                 type="button"
                                 onClick={() => setAddHabit(false)}>
                                 Cancelar
                             </button>
 
-                            <button style={{ background: "#52B6FF", color: "#FFFFFF" }}
+                            <button data-test="habit-create-save-btn" style={{ background: "#52B6FF", color: "#FFFFFF" }}
                                 type="submit"
                                 disabled={loading ? true : false}>
                                 {loading ?
@@ -144,14 +144,14 @@ export default function HabitsPage() {
                     </form>
                 </AddHabit>
 
-                <HabitsContainer>
+                <HabitsContainer data-test="habit-container">
 
                     {listHabits.length != 0 ?
                         <>
                             {listHabits.map((habit) => (
                                 <div key={habit.id}>
-                                    <p>{habit.name}</p>
-                                    <img onClick={() => Delete(habit.id)}src={url.default} />
+                                    <p data-test="habit-name">{habit.name}</p>
+                                    <img data-test="habit-delete-btn" onClick={() => Delete(habit.id)} src={url.default} />
                                     <div>
 
                                         {week.map((day, index) => (
@@ -159,6 +159,7 @@ export default function HabitsPage() {
                                             <DayButton key={index}
                                                 state={habit.days.includes(index) ? "selecionado" : "disponivel"}>
                                                 <button
+                                                    data-test="habit-day"
                                                     onClick={() => SelectDays(index)}
                                                     type="button">
                                                     {day}

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import { useState } from "react"
 import { ThreeDots } from 'react-loader-spinner'
 import { useNavigate } from "react-router-dom";
-import { Image } from "../../App"; 
+import { Image } from "../../App";
 import { useContext } from "react";
 
 export default function RegisterPage() {
@@ -26,13 +26,13 @@ export default function RegisterPage() {
             console.log(response);
             navigate("/");
             setLoading(false);
-            
+
         })
 
         promisePost.catch(error => {
             alert("Preencha os campos corretamente");
             setLoading(false);
-            
+
         })
     }
 
@@ -45,7 +45,7 @@ export default function RegisterPage() {
             <form onSubmit={Register}>
                 <FormContainer>
                     <input
-                        data-test=""
+                        data-test="email-input"
                         id="email"
                         type="text"
                         required
@@ -55,7 +55,7 @@ export default function RegisterPage() {
                     />
 
                     <input
-                        data-test=""
+                        data-test="password-input"
                         id="senha"
                         type="password"
                         required
@@ -65,7 +65,7 @@ export default function RegisterPage() {
                     />
 
                     <input
-                        data-test=""
+                        data-test="user-name-input"
                         id="nome"
                         type="text"
                         required
@@ -75,7 +75,7 @@ export default function RegisterPage() {
                     />
 
                     <input
-                        data-test=""
+                        data-test="user-image-input"
                         id="foto"
                         type="link"
                         required
@@ -83,7 +83,9 @@ export default function RegisterPage() {
                         disabled={loading ? true : false}
                         onChange={e => setImage(e.target.value)} />
 
-                    <button type="submit"
+                    <button
+                        data-test="signup-btn"
+                        type="submit"
                         disabled={loading ? true : false}>{loading ?
                             <ThreeDots
                                 height="80"
@@ -101,7 +103,7 @@ export default function RegisterPage() {
                 </FormContainer>
             </form>
             <Link to={`/`}>
-                <p>Já tem uma conta? Faça login!</p>
+                <p data-test="login-link" >Já tem uma conta? Faça login!</p>
             </Link>
         </PageContainer>
     )
