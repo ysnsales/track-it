@@ -31,13 +31,12 @@ export default function TodayPage() {
 
         const promiseHabits = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today`, header);
         promiseHabits.then((response) => {
-            console.log(response.data);
             setHabitsToday(response.data);
         })
         promiseHabits.catch((error) => {
             console.log(error.response.data);
         })
-    }, []);
+    }, [habitsToday]);
 
     function CheckHabit(id, done, e) {
         e.preventDefault();
@@ -73,13 +72,13 @@ export default function TodayPage() {
                             <h1>{habit.name}</h1>
                             <p>Sequência atual:</p>
                             <p>Seu recorde:</p>
-
-                            <button
-                                disabled={loading}
-                                onClick={(event) => CheckHabit(habit.id, habit.done, event)}>
-                                <img src={url.default} />
-                            </button>
-
+                            <CheckButton done={habit.done}>
+                                <button
+                                    disabled={loading}
+                                    onClick={(event) => CheckHabit(habit.id, habit.done, event)}>
+                                    <img src={url.default} />
+                                </button>
+                            </CheckButton>
                         </div>
 
 
@@ -140,15 +139,19 @@ p{
     line-height: 16px;
     color: #666666;
 }
+`
+
+const CheckButton = styled.div `
+ max-width: 69px;
+    max-height: 69px;
+    position: relative;
+    bottom: 70px;
+    left: 240px;
 button{
     width: 69px;
     height: 69px;
-    position: relative;
-    bottom: 60px;
-    left: 250px;
     background: ${props => props.done ? "#8FC549" : "#EBEBEB"};
     border: 1px solid #E7E7E7;
     border-radius: 5px;
 }
-
 `
