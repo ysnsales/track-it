@@ -1,13 +1,13 @@
-import styled from "styled-components"
+import styled from "styled-components";
 import axios from "axios";
-import TopoMenu from "../TopoMenu"
-import * as url from "../../assets/Group.svg"
-import { ThreeDots } from 'react-loader-spinner'
-
+import TopoMenu from "../TopoMenu";
+import * as url from "../../assets/Group.svg";
+import { confirmAlert } from 'react-confirm-alert';
+import { ThreeDots } from 'react-loader-spinner';
 import { useContext } from "react";
 import { UserContext } from "../UserContext";
-
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 
 export default function HabitsPage() {
@@ -20,8 +20,6 @@ export default function HabitsPage() {
     const [loading, setLoading] = useState(false)
 
     const user = useContext(UserContext);
-    console.log(name)
-    console.log(days)
 
     const week = ["D", "S", "T", "Q", "Q", "S", "S"];
 
@@ -30,19 +28,16 @@ export default function HabitsPage() {
             Authorization: `Bearer ${user.user.token}`,
         },
     };
-
+    
     useEffect(() => {
-
         const promiseHabits = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`, header);
         promiseHabits.then((response) => {
             setListHabits(response.data);
-            console.log(response.data);
-            console.log("lista" + listHabits);
         })
         promiseHabits.catch((error) => {
             console.log(error.response.data);
         })
-    }, []);
+    }, [listHabits]);
 
     function SelectDays(index) {
         let newDays = [...days];
@@ -60,12 +55,13 @@ export default function HabitsPage() {
         e.preventDefault();
         if (days.length != 0 && name != "") {
             const post = { name, days };
-            console.log(post)
             const promisePost = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", post, header);
             promisePost.then(response => {
-                console.log(response.data);
                 setLoading(false);
                 setAddHabit(false);
+                setDays([]);
+                setName("");
+                
             })
             promisePost.catch(error => {
                 console.log(error.response.data);
@@ -76,8 +72,12 @@ export default function HabitsPage() {
     }
 
     function Delete(id) {
-        axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, header)
-        setListHabits(listHabits.filter(habit => habit.id != id))
+        if (window.confirm('Você tem certeza que gostaria de deletar este hábito?')){
+        const promiseDelete = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, header)
+        promiseDelete.then(response => {
+            setListHabits(listHabits.filter(habit => habit.id != id));
+        })}
+        
 
     }
     return (
@@ -99,7 +99,8 @@ export default function HabitsPage() {
                             id=""
                             type="text"
                             placeholder="nome do hábito"
-                            onChange={e => setName(e.target.value)} />
+                            onChange={e => setName(e.target.value)}
+                            value={name} />
 
                         <div>
                             {week.map((day, index) => (
