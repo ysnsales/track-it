@@ -30,6 +30,11 @@ export default function HabitsPage() {
     };
     
     useEffect(() => {
+        GetHabits();
+}, []);
+
+
+    function GetHabits(){
         const promiseHabits = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`, header);
         promiseHabits.then((response) => {
             setListHabits(response.data);
@@ -37,8 +42,8 @@ export default function HabitsPage() {
         promiseHabits.catch((error) => {
             console.log(error.response.data);
         })
-    }, [listHabits]);
-
+    }
+    
     function SelectDays(index) {
         let newDays = [...days];
 
@@ -69,6 +74,7 @@ export default function HabitsPage() {
                 setAddHabit(false);
             })
         }
+        GetHabits();
     }
 
     function Delete(id) {

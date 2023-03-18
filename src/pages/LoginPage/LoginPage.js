@@ -14,7 +14,7 @@ import { UserContext } from "../UserContext";
 export default function LoginPage() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
 
 
@@ -31,9 +31,7 @@ export default function LoginPage() {
         promisePost.then(response => {
             setUser(response.data);
             navigate("/hoje");
-            console.log(response.data.token)
             setLoading(false);
-            console.log(user);
             console.log(response.data)
         }
         )
@@ -99,13 +97,12 @@ export default function LoginPage() {
 }
 
 const PageContainer = styled.div`
+height: 100vh;
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
-padding-top: 70px;
 background-color: #FFFFFF;
-padding-bottom: 120px;
     p{
         font-family: 'Lexend Deca', sans-serif;
         font-style: normal;

@@ -110,13 +110,12 @@ export default function RegisterPage() {
 }
 
 const PageContainer = styled.div`
+height: 100vh;
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
-padding-top: 70px;
 background-color: #FFFFFF;
-padding-bottom: 20px;
     p{
         font-family: 'Lexend Deca';
         font-style: normal;

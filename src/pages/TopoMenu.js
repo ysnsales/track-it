@@ -1,14 +1,19 @@
 import styled from "styled-components"
 
-import { Image } from "../App" ; 
+import { Image } from "../App";
 import { useContext } from "react";
 import { UserContext } from "./UserContext";
+import { PercentContext } from "./PercentContext";
+
 import { useNavigate } from "react-router-dom";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import "react-circular-progressbar/dist/styles.css";
 
 
 export default function Topo() {
-const user = useContext(UserContext)
-const navigate = useNavigate();
+    const user = useContext(UserContext);
+    const percent = useContext(PercentContext);
+    const navigate = useNavigate();
     return (
         <>
             <ContainerTopo data-test="header">
@@ -18,8 +23,21 @@ const navigate = useNavigate();
 
             <ContainerMenu data-test="menu">
                 <h1 data-test="habit-link" onClick={() => navigate("/habitos")}>Hábitos</h1>
-                <div data-test="today-link" onClick={() => navigate("/hoje")}>Hoje</div>
-                <h1 data-test="history-link" onClick={() =>navigate("/historico")}>Histórico</h1>
+
+                <div data-test="today-link" onClick={() => navigate("/hoje")}>
+                    <CircularProgressbar
+                        value={percent.percent}
+                        text={"Hoje"}
+                        background
+                        backgroundPadding={6}
+                        styles={buildStyles({
+                            backgroundColor: "#52B6FF",
+                            textColor: "#FFFFFF",
+                            pathColor: "#FFFFFF",
+                            trailColor: "transparent",
+                        })}
+                    /></div>
+                <h1 data-test="history-link" onClick={() => navigate("/historico")}>Histórico</h1>
 
             </ContainerMenu>
         </>

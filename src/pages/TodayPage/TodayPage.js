@@ -1,34 +1,63 @@
 import styled from "styled-components"
 import TopoMenu from "../TopoMenu"
 import axios from "axios";
+import dayjs from "dayjs";
+
 import { useContext } from "react";
 import { UserContext } from "../UserContext";
-import * as url from "../../assets/Vector.svg";
+import { PercentContext } from "../PercentContext";
 
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
-import HabitsPage from "../HabitsPage/HabitsPage";
+import * as url from "../../assets/Vector.svg";
+
 
 
 export default function TodayPage() {
+ const user = useContext(UserContext);
+    const { percent, setPercent} = useContext(PercentContext);
+
     const [habitsToday, setHabitsToday] = useState([]);
+    const [habitsDone, setHabitsDone] = useState(0)
     const [isDone, setIsDone] = useState();
     const [loading, setLoading] = useState(false)
-
-    const user = useContext(UserContext);
 
     const header = {
         headers: {
             Authorization: `Bearer ${user.user.token}`,
         },
     };
+
     const date = dayjs().date();
     const month = dayjs().month();
     const day = dayjs().day();
     const week = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
-    useEffect(() => {
 
+    useEffect(() => {
+        HabitsToday();
+    }, []);
+
+    useEffect(() => { 
+        let done = 0;
+        let total = 0;
+
+        console.log(done)
+        console.log(total)
+        if (habitsToday.length != 0){
+            habitsToday.forEach(habit => {
+                total ++;
+                if (habit.done){
+                    done++;
+                    setHabitsDone(done)
+                }
+        })
+        } 
+    const percentValue = done/total*100;
+    setPercent(percentValue);
+    setIsDone(Math.round(percentValue));
+    }, [habitsToday]);
+
+    function HabitsToday(){
         const promiseHabits = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today`, header);
         promiseHabits.then((response) => {
             setHabitsToday(response.data);
@@ -36,7 +65,8 @@ export default function TodayPage() {
         promiseHabits.catch((error) => {
             console.log(error.response.data);
         })
-    }, [habitsToday]);
+
+    }
 
     function CheckHabit(id, done, e) {
         e.preventDefault();
@@ -56,7 +86,7 @@ export default function TodayPage() {
             console.log(error.response.data);
             setLoading(false)
         }))
-
+        HabitsToday();
     }
 
 
@@ -65,6 +95,7 @@ export default function TodayPage() {
             <TopoMenu />
             <PageContainer>
                 <h1>{week[day]}, {date}/{month + 1}</h1>
+                <p style={isDone===0 ? {color:"#BABABA"}: {color:"#8FC549"}}>{isDone===0 ? "Nenhum hábito concluído ainda" : `${isDone}% dos hábitos concluídos`}</p>
 
                 <Habits>
                     {habitsToday.map((habit) => (
@@ -90,30 +121,34 @@ export default function TodayPage() {
 }
 
 const PageContainer = styled.div` 
+display: flex;
+flex-direction: column;
+
 justify-content: center;
+
 padding: 98px 18px;
 h1{
+    
     font-family: 'Lexend Deca', sans-serif;
 font-style: normal;
 font-weight: 400;
 font-size: 22.976px;
 line-height: 29px;
-margin-bottom: 17px;
-
-
 color: #126BA5;
 }
 p{
     font-family: 'Lexend Deca', sans-serif;
 font-style: normal;
 font-weight: 400;
-font-size: 17.976px;
+font-size: 18px;
 line-height: 22px;
-
-color: #666666;
+color: #BABABA;
+;
 }`
 
 const Habits = styled.div`
+
+margin: 17px auto;
 div{
     width: 320px;
     height: 74px;
@@ -153,5 +188,9 @@ button{
     background: ${props => props.done ? "#8FC549" : "#EBEBEB"};
     border: 1px solid #E7E7E7;
     border-radius: 5px;
+    &:disabled {
+			background: ${props => props.done ? "#8FC549" : "#EBEBEB"};
+			opacity: 0.7;
+		}
 }
 `
