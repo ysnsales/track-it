@@ -13,6 +13,8 @@ export default function HistoricPage(){
 }
 
 const PageContainer = styled.div` 
+width: 304px;
+margin: 0 auto;
 justify-content: center;
 padding: 98px 18px;
 h1{

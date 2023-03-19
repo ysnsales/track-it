@@ -13,13 +13,12 @@ import * as url from "../../assets/Vector.svg";
 
 
 export default function TodayPage() {
- const user = useContext(UserContext);
-    const { percent, setPercent} = useContext(PercentContext);
+    const user = useContext(UserContext);
+    const { percent, setPercent } = useContext(PercentContext);
 
     const [habitsToday, setHabitsToday] = useState([]);
-    const [habitsDone, setHabitsDone] = useState(0)
     const [isDone, setIsDone] = useState();
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const header = {
         headers: {
@@ -31,33 +30,32 @@ export default function TodayPage() {
     const month = dayjs().month();
     const day = dayjs().day();
     const week = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+    const months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
 
 
     useEffect(() => {
         HabitsToday();
     }, []);
 
-    useEffect(() => { 
+    useEffect(() => {
         let done = 0;
         let total = 0;
-
-        console.log(done)
-        console.log(total)
-        if (habitsToday.length != 0){
-            habitsToday.forEach(habit => {
-                total ++;
-                if (habit.done){
+        if (habitsToday.length) {
+            habitsToday?.forEach(habit => {
+                total++;
+                if (habit.done) {
                     done++;
-                    setHabitsDone(done)
                 }
-        })
-        } 
-    const percentValue = done/total*100;
-    setPercent(percentValue);
-    setIsDone(Math.round(percentValue));
+            })
+
+        }
+        const percentValue = done / total * 100;
+        setPercent(percentValue);
+        setIsDone(Math.round(percentValue));
+
     }, [habitsToday]);
 
-    function HabitsToday(){
+    function HabitsToday() {
         const promiseHabits = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today`, header);
         promiseHabits.then((response) => {
             setHabitsToday(response.data);
@@ -68,11 +66,10 @@ export default function TodayPage() {
 
     }
 
-    function CheckHabit(id, done, e) {
+    function CheckHabit(e, id, done) {
         e.preventDefault();
         setLoading(true)
-        console.log(done);
-
+        HabitsToday();
         const promiseCheck = !done ?
             axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`, {}, header)
             :
@@ -94,19 +91,19 @@ export default function TodayPage() {
         <>
             <TopoMenu />
             <PageContainer>
-                <h1>{week[day]}, {date}/{month + 1}</h1>
-                <p style={isDone===0 ? {color:"#BABABA"}: {color:"#8FC549"}}>{isDone===0 ? "Nenhum hábito concluído ainda" : `${isDone}% dos hábitos concluídos`}</p>
+                <h1 data-test="today">{week[day]}, {date}/{months[month]}</h1>
+                <p data-test="today-counter" style={isDone === 0 ? { color: "#BABABA" } : { color: "#8FC549" }}>{isDone === 0 ? "Nenhum hábito concluído ainda" : `${isDone}% dos hábitos concluídos`}</p>
 
                 <Habits>
                     {habitsToday.map((habit) => (
-                        <div key={habit.id}>
-                            <h1>{habit.name}</h1>
-                            <p>Sequência atual:</p>
-                            <p>Seu recorde:</p>
+                        <div data-test="today-habit-container" key={habit.id}>
+                            <h1 data-test="today-habit-name" >{habit.name}</h1>
+                            <p data-test="today-habit-sequence" >Sequência atual:</p>
+                            <p data-test="today-habit-record">Seu recorde:</p>
                             <CheckButton done={habit.done}>
-                                <button
+                                <button data-test="today-habit-check-btn"
                                     disabled={loading}
-                                    onClick={(event) => CheckHabit(habit.id, habit.done, event)}>
+                                    onClick={(event) => CheckHabit(event, habit.id, habit.done)}>
                                     <img src={url.default} />
                                 </button>
                             </CheckButton>
@@ -121,12 +118,12 @@ export default function TodayPage() {
 }
 
 const PageContainer = styled.div` 
+width: 304px;
 display: flex;
 flex-direction: column;
-
 justify-content: center;
-
 padding: 98px 18px;
+margin: 0 auto;
 h1{
     
     font-family: 'Lexend Deca', sans-serif;
@@ -176,7 +173,7 @@ p{
 }
 `
 
-const CheckButton = styled.div `
+const CheckButton = styled.div`
  max-width: 69px;
     max-height: 69px;
     position: relative;

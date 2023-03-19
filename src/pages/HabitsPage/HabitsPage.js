@@ -190,13 +190,15 @@ export default function HabitsPage() {
 }
 
 const PageContainer = styled.div`
-width: 100vw;
+width: 304px;
+margin: 0 auto;
 background-size: cover;
 display: flex;
 flex-direction: column;
 padding: 98px 0 98px;
 background-color: #E5E5E5;
 justify-content: space-between;
+
     p{
         font-family: 'Lexend Deca', sans-serif;
         font-style: normal;

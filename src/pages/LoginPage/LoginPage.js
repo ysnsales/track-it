@@ -36,7 +36,15 @@ export default function LoginPage() {
         }
         )
         promisePost.catch(error => {
-            alert(("Email ou senha incorretos"))
+            if (!error.response) {
+                alert("Sem resposta do servidor")
+            }if (error.response.status === 401){
+                alert("Senha ou usuário incorretos")
+            }if (error.response.status === 422){
+                alert("O servidor não pode processar sua solicitação. Verifique se os dados foram preenchidos corretamente")
+            }else {
+                alert("O login falhou")
+            }
             setLoading(false)
         })
 

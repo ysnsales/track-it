@@ -30,7 +30,13 @@ export default function RegisterPage() {
         })
 
         promisePost.catch(error => {
-            alert("Preencha os campos corretamente");
+            if (!error.response) {
+                alert("Sem resposta do servidor")
+            }if (error.response.status === 409){
+                alert("Email já utilizado")
+            }else {
+                alert("O cadastro falhou. Verifique se os dados foram preenchidos corretamente")
+            }
             setLoading(false);
 
         })
