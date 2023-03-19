@@ -1,14 +1,29 @@
-import styled from "styled-components"
-import TopoMenu from "../TopoMenu"
+import styled from "styled-components";
+import TopoMenu from "../TopoMenu";
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import dayjs from "dayjs";
+import { useEffect, useState } from "react"
 
-export default function HistoricPage(){
-    return(<>
+export default function HistoricPage() {
+    const [date, setDate] = useState(new Date());
+
+    return (<>
         <TopoMenu />
         <PageContainer>
             <h1>Histórico</h1>
             <p>Em breve você poderá ver o histórico dos seus hábitos aqui!</p>
+            {/*<CalendarContainer
+                onChange={setDate}
+                locale="pt-BR"
+                value={date}
+                formatDay={(locale, date) => dayjs(date).format('DD')}
+                style={{ background: "red" }}>
+
+    </CalendarContainer> */}
         </PageContainer>
-        </>
+
+    </>
     )
 }
 
@@ -37,3 +52,18 @@ line-height: 22px;
 
 color: #666666;
 }`
+
+const CalendarContainer = styled(Calendar)`
+width: 335px;
+border-radius: 10px;
+padding:10px;
+font-family:  'Lexend Deca', sans-serif;
+font-weight: bold;
+font-size: 18px;
+.react-calendar__tile {
+    color: #000;
+    text-align: center;
+    font-size: 0.8rem;
+    padding: 10px;
+    }
+`

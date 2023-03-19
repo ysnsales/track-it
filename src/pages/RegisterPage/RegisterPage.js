@@ -1,12 +1,10 @@
-import styled from "styled-components"
+import styled from "styled-components";
 import axios from "axios";
-import * as url from "../../assets/logo-completa.svg"
-import { Link } from "react-router-dom"
-import { useState } from "react"
-import { ThreeDots } from 'react-loader-spinner'
+import * as url from "../../assets/logo-completa.svg";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { ThreeDots } from 'react-loader-spinner';
 import { useNavigate } from "react-router-dom";
-import { Image } from "../../App";
-import { useContext } from "react";
 
 export default function RegisterPage() {
     const [email, setEmail] = useState("");
@@ -32,7 +30,7 @@ export default function RegisterPage() {
         promisePost.catch(error => {
             if (!error.response) {
                 alert("Sem resposta do servidor")
-            }else if (error.response.status === 409) {
+            } else if (error.response.status === 409) {
                 alert("Email já utilizado")
             } else {
                 alert("O cadastro falhou. Verifique se os dados foram preenchidos corretamente")
@@ -110,11 +108,12 @@ export default function RegisterPage() {
                                 align-self="center"
                             />
                             : "Cadastrar"}</button>
+                    <Link to={`/`}>
+                        <p data-test="login-link" >Já tem uma conta? Faça login!</p>
+                    </Link>
                 </FormContainer>
             </form>
-            <Link to={`/`}>
-                <p data-test="login-link" >Já tem uma conta? Faça login!</p>
-            </Link>
+
         </PageContainer>
     )
 }

@@ -96,12 +96,12 @@ export default function LoginPage() {
                                 align-self="center"
                             />
                             : "Entrar"}</button>
-
-                </FormContainer>
-            </form>
             <Link data-test="signup-link" to={`/registro`}>
                 <p>Não tem uma conta? Cadastre-se!</p>
             </Link>
+                </FormContainer>
+            </form>
+
         </PageContainer>
     )
 }
