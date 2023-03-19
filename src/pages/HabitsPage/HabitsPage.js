@@ -343,6 +343,9 @@ const DayButton = styled.div`
         font-weight: 400;
         font-size: 20px;
         line-height: 25px;
+        &:disabled {
+			opacity: 0.7;
+		}
     }
 `
 

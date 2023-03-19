@@ -37,11 +37,11 @@ export default function LoginPage() {
         )
         promisePost.catch(error => {
             if (!error.response) {
-                alert("Sem resposta do servidor")
-            } if (error.response.status === 401) {
-                alert("Senha ou usuário incorretos")
-            } if (error.response.status === 422) {
-                alert("O servidor não pode processar sua solicitação. Verifique se os dados foram preenchidos corretamente")
+                alert("Sem resposta do servidor");
+            }else if (error.response.status === 401) {
+                alert("Senha ou usuário incorretos");
+            } else if (error.response.status === 422) {
+                alert("O servidor não pode processar sua solicitação. Verifique se os dados foram preenchidos corretamente");
             } else {
                 alert("O login falhou")
             }
@@ -99,8 +99,8 @@ export default function LoginPage() {
 
                 </FormContainer>
             </form>
-            <Link to={`/registro`}>
-                <p data-test="signup-link" >Não tem uma conta? Cadastre-se!</p>
+            <Link data-test="signup-link" to={`/registro`}>
+                <p>Não tem uma conta? Cadastre-se!</p>
             </Link>
         </PageContainer>
     )

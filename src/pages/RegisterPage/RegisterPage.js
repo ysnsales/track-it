@@ -32,7 +32,7 @@ export default function RegisterPage() {
         promisePost.catch(error => {
             if (!error.response) {
                 alert("Sem resposta do servidor")
-            } if (error.response.status === 409) {
+            }else if (error.response.status === 409) {
                 alert("Email já utilizado")
             } else {
                 alert("O cadastro falhou. Verifique se os dados foram preenchidos corretamente")
@@ -90,7 +90,7 @@ export default function RegisterPage() {
                         placeholder="foto"
                         disabled={loading ? true : false}
                         onChange={e => setImage(e.target.value)}
-                        pattern="^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-z0-9]+(?:[\-\.][a-z0-9]+)\.[a-z]{2,6}(?:\/.)?$"
+                        pattern="(https?:\/\/.*\.(?:png|jpg))"
                         title="Precisa ser um link de uma imagem válido" />
 
                     <button
