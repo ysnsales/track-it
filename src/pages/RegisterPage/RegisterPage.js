@@ -32,9 +32,9 @@ export default function RegisterPage() {
         promisePost.catch(error => {
             if (!error.response) {
                 alert("Sem resposta do servidor")
-            }if (error.response.status === 409){
+            } if (error.response.status === 409) {
                 alert("Email já utilizado")
-            }else {
+            } else {
                 alert("O cadastro falhou. Verifique se os dados foram preenchidos corretamente")
             }
             setLoading(false);
@@ -58,6 +58,8 @@ export default function RegisterPage() {
                         placeholder="email"
                         disabled={loading ? true : false}
                         onChange={e => setEmail(e.target.value)}
+                        pattern="^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,})+$"
+                        title="Precisa ser um email valido. Exemplo (nome@dominio.com)"
                     />
 
                     <input
@@ -87,7 +89,9 @@ export default function RegisterPage() {
                         required
                         placeholder="foto"
                         disabled={loading ? true : false}
-                        onChange={e => setImage(e.target.value)} />
+                        onChange={e => setImage(e.target.value)}
+                        pattern="^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-z0-9]+(?:[\-\.][a-z0-9]+)\.[a-z]{2,6}(?:\/.)?$"
+                        title="Precisa ser um link de uma imagem válido" />
 
                     <button
                         data-test="signup-btn"
