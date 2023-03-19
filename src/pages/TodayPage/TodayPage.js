@@ -19,6 +19,7 @@ export default function TodayPage() {
     const [habitsToday, setHabitsToday] = useState([]);
     const [isDone, setIsDone] = useState();
     const [loading, setLoading] = useState(false);
+    const [check, setCheck] = useState()
 
     const header = {
         headers: {
@@ -104,9 +105,9 @@ export default function TodayPage() {
                     {habitsToday.map((habit) => (
                         <div data-test="today-habit-container" key={habit.id}>
                             <h1 data-test="today-habit-name" >{habit.name}</h1>
-                            <p data-test="today-habit-sequence" >Sequência atual:</p>
-                            <p data-test="today-habit-record">Seu recorde:</p>
-                            <CheckButton done={habit.done}>
+                            <p>Sequência atual: <P data-test="today-habit-sequence" green={habit.done}> {habit.currentSequence} {habit.currentSequence > 1 ? "dias" : "dia"}</P></p>
+                            <p>Seu recorde:<B data-test="today-habit-record" green={habit.currentSequence===habit.highestSequence && habit.highestSequence >0}> {habit.highestSequence} {habit.highestSequence > 1 ? "dias" : "dia"} </B> </p>
+                            <CheckButton done={habit.done}> 
                                 <button data-test="today-habit-check-btn"
                                     disabled={loading}
                                     onClick={(event) => CheckHabit(event, habit.id, habit.done)}>
@@ -196,4 +197,11 @@ button{
 			opacity: 0.7;
 		}
 }
+`
+const B = styled.span`
+color: ${props => props.green ? "#8FC549;" : "#666666;"};
+`
+
+const P =  styled.span`
+color: ${props => props.green ? "#8FC549;" : "#666666;"};
 `
