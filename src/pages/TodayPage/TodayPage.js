@@ -49,9 +49,15 @@ export default function TodayPage() {
             })
 
         }
-        const percentValue = done / total * 100;
-        setPercent(percentValue);
-        setIsDone(Math.round(percentValue));
+        console.log(isDone)
+        if (total != 0) {
+            const percentValue = done / total * 100;
+            setPercent(percentValue);
+            setIsDone(Math.round(percentValue));
+        }else {
+            setIsDone(0)
+        }
+
 
     }, [habitsToday]);
 

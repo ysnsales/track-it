@@ -105,7 +105,7 @@ export default function RegisterPage() {
                                 visible={loading}
                                 align-self="center"
                             />
-                            : "Entrar"}</button>
+                            : "Cadastrar"}</button>
                 </FormContainer>
             </form>
             <Link to={`/`}>

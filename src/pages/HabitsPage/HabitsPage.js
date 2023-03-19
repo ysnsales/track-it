@@ -28,13 +28,13 @@ export default function HabitsPage() {
             Authorization: `Bearer ${user.user.token}`,
         },
     };
-    
+
     useEffect(() => {
         GetHabits();
-}, []);
+    }, []);
 
 
-    function GetHabits(){
+    function GetHabits() {
         const promiseHabits = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`, header);
         promiseHabits.then((response) => {
             setListHabits(response.data);
@@ -43,7 +43,7 @@ export default function HabitsPage() {
             console.log(error.response.data);
         })
     }
-    
+
     function SelectDays(index) {
         let newDays = [...days];
 
@@ -58,7 +58,13 @@ export default function HabitsPage() {
 
     function CreateHabit(e) {
         e.preventDefault();
+        GetHabits();
+
+        if (name === "") {
+            alert("Insira um nome para o hábito");
+        }
         if (days.length != 0 && name != "") {
+            setLoading(true)
             const post = { name, days };
             const promisePost = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", post, header);
             promisePost.then(response => {
@@ -66,9 +72,10 @@ export default function HabitsPage() {
                 setAddHabit(false);
                 setDays([]);
                 setName("");
-                
+
             })
             promisePost.catch(error => {
+                setLoading(true)
                 console.log(error.response.data);
                 setLoading(false);
                 setAddHabit(false);
@@ -78,12 +85,13 @@ export default function HabitsPage() {
     }
 
     function Delete(id) {
-        if (window.confirm('Você tem certeza que gostaria de deletar este hábito?')){
-        const promiseDelete = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, header)
-        promiseDelete.then(response => {
-            setListHabits(listHabits.filter(habit => habit.id != id));
-        })}
-        
+        if (window.confirm('Você tem certeza que gostaria de deletar este hábito?')) {
+            const promiseDelete = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, header)
+            promiseDelete.then(response => {
+                setListHabits(listHabits.filter(habit => habit.id != id));
+            })
+        }
+
 
     }
     return (
@@ -99,13 +107,14 @@ export default function HabitsPage() {
                 </Habits>
 
                 <AddHabit data-test="habit-create-container" addHabit={addHabit}>
-                    <form onSubmit={CreateHabit}>
+                    <form>
                         <input
                             data-test="habit-name-input"
-                            id=""
+                            id="habit-name-input"
                             type="text"
                             placeholder="nome do hábito"
                             onChange={e => setName(e.target.value)}
+                            disabled={loading}
                             value={name} />
 
                         <div>
@@ -115,6 +124,7 @@ export default function HabitsPage() {
                                     state={days.includes(index) ? "selecionado" : "disponivel"}>
                                     <button data-test="habit-day"
                                         onClick={() => SelectDays(index)}
+                                        disabled={loading}
                                         type="button">
                                         {day}
                                     </button>
@@ -125,12 +135,14 @@ export default function HabitsPage() {
                         <CancelSave disabled={disabled}>
                             <button data-test="habit-create-cancel-btn" style={{ background: "#FFFFFF", color: "#52B6FF" }}
                                 type="button"
+                                disabled={loading}
                                 onClick={() => setAddHabit(false)}>
                                 Cancelar
                             </button>
 
                             <button data-test="habit-create-save-btn" style={{ background: "#52B6FF", color: "#FFFFFF" }}
                                 type="submit"
+                                onClick={(e) => CreateHabit(e)}
                                 disabled={loading ? true : false}>
                                 {loading ?
                                     <ThreeDots
@@ -151,12 +163,12 @@ export default function HabitsPage() {
                     </form>
                 </AddHabit>
 
-                <HabitsContainer data-test="habit-container">
+                <HabitsContainer>
 
                     {listHabits.length != 0 ?
                         <>
                             {listHabits.map((habit) => (
-                                <div key={habit.id}>
+                                <div data-test="habit-container" key={habit.id}>
                                     <p data-test="habit-name">{habit.name}</p>
                                     <img data-test="habit-delete-btn" onClick={() => Delete(habit.id)} src={url.default} />
                                     <div>
@@ -347,7 +359,9 @@ button{
     min-width: 84px;
     border: none;
     border-radius: 5px;
-    display: ${props => props.disabled ? "none" : "true"};
+    display: ${props => props.disabled ? "none" : "flex"};
+    align-items: center;
+    justify-content: center;
 
     font-family: 'Lexend Deca', sans-serif;
     font-style: normal;
