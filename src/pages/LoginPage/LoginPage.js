@@ -38,11 +38,11 @@ export default function LoginPage() {
         promisePost.catch(error => {
             if (!error.response) {
                 alert("Sem resposta do servidor")
-            }if (error.response.status === 401){
+            } if (error.response.status === 401) {
                 alert("Senha ou usuário incorretos")
-            }if (error.response.status === 422){
+            } if (error.response.status === 422) {
                 alert("O servidor não pode processar sua solicitação. Verifique se os dados foram preenchidos corretamente")
-            }else {
+            } else {
                 alert("O login falhou")
             }
             setLoading(false)
@@ -65,6 +65,8 @@ export default function LoginPage() {
                         placeholder="email"
                         disabled={loading ? true : false}
                         onChange={e => setEmail(e.target.value)}
+                        pattern="^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,})+$"
+                        title="Precisa ser um email valido. Exemplo (nome@dominio.com)"
                     />
 
                     <input
