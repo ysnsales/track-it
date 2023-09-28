@@ -18,8 +18,8 @@ Este projeto é uma aplicação de rastreamento de hábitos. Nele você pode mon
 ## Instalação
 
 ```bash
-$ git clone https://github.com/ysnsales/Track-it
-$ cd Track-it
+$ git clone https://github.com/ysnsales/track-it
+$ cd track-it
 $ npm install
 ```
 
