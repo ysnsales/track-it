@@ -39,6 +39,8 @@ $ npm run build
 # development
 $ npm run start
 
+```
+
 ## Tecnologias
 
 <div> 
@@ -51,4 +53,3 @@ $ npm run start
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" height="40" width="52" alt="github logo" /> 
 <div>
 <br>
-<hr/>
